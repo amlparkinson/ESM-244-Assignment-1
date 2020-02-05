@@ -1,13 +1,12 @@
 ---
-title: "Assignemnt 2: Task 2"
+title: "Assignemnt 1: Task 2"
 author: "Anne-Marie Parkinson"
 date: "January 24, 2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F,
-                      warnings = F,
+knitr::opts_chunk$set(warnings = F,
                       messages = F)
 ```
 
@@ -29,7 +28,7 @@ bc <- read_csv(here::here("Data", "PSMA Polygon Data (1).csv"))
 I am currently workking on a project  to understand how topographic and climatic variables affected mortality of endemic Big-cone (*Pseudotsuga macrocarpa*) conifers in Los Padres National Forest after the 2007 Zaca Fire. Knowing how these variables interact to affect fire-induced mortality will help guide restoration efforts by prioritizing out-planting in areas most likely to survive future fires. ArcGIS was used to gather mean values for topographic variables such as elevation, aspect, topographic wetness index (TWI), and topographic position index (TPI) and climate variables; weather data was obtained as 30-year normals from the PRISM Climate Group^1^.  Here I will be exploring relationships between these environmental variables. 
 
 # PCA 
-```{r, warnings = F, messages = F, include = T, fig.align='center'}
+```{r, warning = F}
 #sub-data
 bc_sub <- bc %>% 
   select (elev:tpi, vpd_Aug, twi, flow, vpd_jan, cwd_2) %>% 
@@ -50,6 +49,10 @@ bc_sub <- bc %>%
 # run PCA 
 z_bc_pca <- prcomp(bc_sub, scale = T)
 
+```
+
+```{r, echo = F, warning = F, include = T, results = 'asis'}
+
 #plot
 autoplot(z_bc_pca, 
          colour = NA, 
@@ -64,6 +67,8 @@ autoplot(z_bc_pca,
   scale_y_continuous(lim = c(-0.1, 0.1),
                      expand = c(0,0))
 ```
+
+
 ***Figure 1:** PCA exploring the relationships between various topographic and climatic variables that could influence fire-induced mortality of *P. macrocarpa*. 68.3% of variance is explained by the first two principal components.*  
 
 <br> 

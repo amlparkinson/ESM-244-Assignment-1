@@ -6,8 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F,
-                      warnings = F,
+knitr::opts_chunk$set(warnings = F,
                       messages = F)
 ```
 
@@ -45,8 +44,13 @@ Capture-recapture studies were carried out in Bonanza Creek Experimental Forest 
 <br>
 
 # Bonanza Creek Snowshoe Hare Population
-```{r fig.align='center'}
-# subdata------------------------------------------------
+
+<br>
+<br>
+
+```{r fig.align='center', echo = T, ,warning = F}
+
+# subdata------------------------------------------------------------
 
 hares_sub <- hares %>% 
   select(date, sex, weight) %>% 
@@ -57,13 +61,13 @@ hares_sub <- hares %>%
   mutate (year = lubridate::year(date),
           month = lubridate::month(date))
 
-# summary ----------------------------------------------
+# data frame with annual mean weights by sex--------------------------
 
 hares_mean <- hares_sub %>% 
   group_by(year,sex) %>% 
   summarise(mean_weight = mean(weight))
 
-# graph -------------------------------------------------
+# graph -------------------------------------------------------------
 
 ggplot(hares_mean, aes(x = year, y = mean_weight)) +
   geom_point(aes(color = sex)) +
@@ -87,8 +91,9 @@ ggplot(hares_mean, aes(x = year, y = mean_weight)) +
 # Summary Statistics of Snowshoe Hares 
 
 ***Table 1:** Annual Summary statistics amd sample size of snowshoe hare (*Lepus americanus*) weights. Data: Bonanza Creek LTER.*
-```{r}
+```{r, echo = T, warning = F, message = F}
 
+# create data frame with summary statistics -------------------------------------
 hares_summary_stats <- hares_sub %>% 
   group_by(year) %>% 
   summarise(sample_size = n(),
@@ -99,7 +104,9 @@ hares_summary_stats <- hares_sub %>%
             se_weight = sd(weight/sqrt(n()))
             )
 
-hares_summary_stats %>% kable(col.names = c("Year", "Sample Size", "Mean", "Minimum", 
+# create nice looking table with kableExtra -------------------------------------
+hares_summary_stats %>% 
+  kable(col.names = c("Year", "Sample Size", "Mean", "Minimum", 
                     "Maximum", "Standard Deviation", "Standard Error"), align = "c") %>% 
   kable_styling (bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
     full_width=T,
